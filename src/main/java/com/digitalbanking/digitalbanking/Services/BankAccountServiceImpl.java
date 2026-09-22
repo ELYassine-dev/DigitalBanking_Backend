@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
 
 @Service
 @Transactional
@@ -150,8 +151,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     }
 
+
     @Override
-    public void transfer(String sourceAccountId, String destinationAccountId, double amount)throws BankAccountNotFoundException {
+    public void transfer(String sourceAccountId, String destinationAccountId, double amount,String description)throws BankAccountNotFoundException {
 
         debit(sourceAccountId, amount, "transfer to "+destinationAccountId);
         credit(destinationAccountId, amount, "transfer from "+sourceAccountId);
@@ -209,7 +211,7 @@ public List<OperationsDto>  accountHistory(String id){
      BankAccount bankaccount=bankAccountRepository.findById(id).orElse(null);
         if(bankaccount==null) throw new BankAccountNotFoundException("Account not found");
 
-       Page<Operations> accountoperations= operationsRepository.findByBankAccountId(id, PageRequest.of(page,size));
+       Page<Operations> accountoperations= operationsRepository.findByBankAccountIdOrderByDateDesc(id, PageRequest.of(page,size));
 AccountHistoryDto accountHistoryDto=new AccountHistoryDto();
 List<OperationsDto> operationdto=accountoperations.getContent().stream().map(op->maperdto.fromOperations(op)).toList();
         accountHistoryDto.setOperationsdto(operationdto);
@@ -220,6 +222,13 @@ List<OperationsDto> operationdto=accountoperations.getContent().stream().map(op-
         accountHistoryDto.setTotalPage(accountoperations.getTotalPages());
 
         return accountHistoryDto;
+    }
+
+    @Override
+    public List<ReqCustomerDto> searchcustomer(String searchkw) {
+        List<Customer> customers =customerRepository.searchcustomer(searchkw);
+      return  customers.stream().map(c->
+            maperdto.fromCustomer(c)).toList() ;
     }
 
 

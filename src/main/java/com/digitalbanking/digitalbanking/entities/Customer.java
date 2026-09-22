@@ -25,7 +25,7 @@ public class Customer {
     @NotNull(message = "phone number must not be empty")
     private String phone;
     @NotBlank(message = "adresse must not be empty")
-    private String address;
+    private String adresse;
 
     @OneToMany(mappedBy = "customer")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

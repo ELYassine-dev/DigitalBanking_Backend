@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:4200")
 @RequestMapping("/customers")
 @AllArgsConstructor
 @Slf4j
@@ -21,6 +22,10 @@ public class CustomerController {
     @GetMapping
     public List<ReqCustomerDto> getCustomer() {
         return bankAccountService.listCustomers();
+    }
+    @GetMapping("/search")
+    public List<ReqCustomerDto> searchCustomer(@RequestParam(name = "searchkw", defaultValue = "") String searchkw) {
+        return bankAccountService.searchcustomer(searchkw);
     }
 
     @GetMapping("/{id}")
@@ -42,7 +47,7 @@ public class CustomerController {
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public void deleteCustomer(@PathVariable Long id ) {
         bankAccountService.deletecustomer(id);
     }

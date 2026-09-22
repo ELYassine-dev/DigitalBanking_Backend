@@ -38,7 +38,7 @@ public class DigitalBankingApplication {
                         customer.setName(name);
                         customer.setEmail(name + "@gmail.com");
                         customer.setPhone("123456789");
-                        customer.setAddress("rabat");
+                        customer.setAdresse("rabat");
                         bankAccountService.saveCustomer(customer);
                     });
 
@@ -80,7 +80,7 @@ if(bankAccountDto instanceof SavingBankAccountDto){
              Stream.of("yassine","hassan","aicha").forEach(name -> {
                  Customer customer1 = new Customer();
                  customer1.setName(name);
-                 customer1.setAddress("sale");
+                 customer1.setAdresse("sale");
                  customer1.setPhone("061234567");
                  customer1.setEmail(name+"@gmail.com");
                  customerRepository.save(customer1);

@@ -1,10 +1,9 @@
 package com.digitalbanking.digitalbanking.web;
 
-import com.digitalbanking.digitalbanking.DTOs.AccountHistoryDto;
-import com.digitalbanking.digitalbanking.DTOs.BankAccountDto;
-import com.digitalbanking.digitalbanking.DTOs.OperationsDto;
+import com.digitalbanking.digitalbanking.DTOs.*;
 import com.digitalbanking.digitalbanking.Services.BankAccountService;
 import com.digitalbanking.digitalbanking.entities.BankAccount;
+import com.digitalbanking.digitalbanking.exception.BalanceNotSufficientException;
 import com.digitalbanking.digitalbanking.exception.BankAccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/bankaccounts")
 @AllArgsConstructor
-
+@CrossOrigin("http://localhost:4200")
 public class BankAccountController {
  private BankAccountService bankAccountService;
 
@@ -52,7 +51,24 @@ public class BankAccountController {
 // }
 
 
+@PostMapping("/debit")
+ public DebitDto debit(@RequestBody DebitDto debitDto)throws BankAccountNotFoundException,BalanceNotSufficientException {
+  this.bankAccountService.debit(debitDto.getAccountid(),debitDto.getAmount(),debitDto.getDescription());
+return debitDto;
+}
 
+ @PostMapping("/credit")
+ public CreditDto credit(@RequestBody CreditDto creditDto)throws BankAccountNotFoundException,BalanceNotSufficientException {
+  this.bankAccountService.credit(creditDto.getAccountid(),creditDto.getAmount(),creditDto.getDescription());
+  return creditDto;
+ }
 
+ @PostMapping("/transfer")
+ public void transfer(@RequestBody TransferRequestDto transferDto)throws BankAccountNotFoundException,BalanceNotSufficientException {
+  this.bankAccountService.transfer(transferDto.getAccountSource(),
+          transferDto.getAccountDestination(),
+          transferDto.getAmount(),transferDto.getDescription());
+
+ }
 
 }

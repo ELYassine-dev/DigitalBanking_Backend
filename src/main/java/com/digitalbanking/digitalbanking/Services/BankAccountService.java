@@ -19,8 +19,11 @@ public interface BankAccountService {
     List<ReqCustomerDto> listCustomers();
     BankAccountDto getBankAccount(String accountid);
     void credit(String accountid, double amount,String description);
+
     void debit(String accountid, double amount,String description);
-    void transfer(String sourceAccountId,String destinationAccountId,double amount);
+
+
+    void transfer(String sourceAccountId,String destinationAccountId,double amount,String description);
 
 
     List<BankAccountDto> listofBankAccount();
@@ -35,4 +38,6 @@ public interface BankAccountService {
     List<OperationsDto>  accountHistory(String id);
 
     AccountHistoryDto getAccountHistory(String id, int page, int size);
+
+    List<ReqCustomerDto> searchcustomer(String searchkw);
 }
